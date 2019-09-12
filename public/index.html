@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+    <!--使用 viewport meta 标签在手机浏览器上控制布局-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <!--通过快捷方式打开时全屏显示-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--隐藏状态栏-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="blank" />
+    <!--iPhone会将看起来像电话号码的数字添加电话连接，应当关闭-->
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>colornote</title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but colornote doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <style>
+    /*滚动条凹槽的颜色，还可以设置边框属性 */
+    ::-webkit-scrollbar-track-piece {
+      -webkit-border-radius: 2em;
+      -moz-border-radius: 2em;
+      border-radius: 2em;
+      background: rgb(221, 221, 221);
+    }
+    /*滚动条的宽度*/
+    ::-webkit-scrollbar {
+      width: 9px;
+      height: 8px;
+    }
+    /*滚动条的设置*/
+    ::-webkit-scrollbar-thumb {
+      background: rgb(173, 173, 173);
+      background-image: -webkit-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.2) 25%,
+          transparent 25%,
+          transparent 50%,
+          rgba(255, 255, 255, 0.2) 50%,
+          rgba(255, 255, 255, 0.2) 75%,
+          transparent 75%,
+          transparent
+      );
+      background-clip:padding-box;
+      -webkit-border-radius: 2em;
+      -moz-border-radius: 2em;
+      border-radius: 2em;
+    }
+    /*滚动条鼠标移上去*/
+    ::-webkit-scrollbar-thumb:hover {
+      border: 1px solid rgb(118, 118, 119);
+    }
+  </style>
+</html>
