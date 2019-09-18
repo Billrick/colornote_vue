@@ -285,6 +285,13 @@ export default {
           .then(res => {
             if (res.code == 200) {
               console.log(res);
+              this.$notify({
+                title: '成功',
+                message: '编辑成功',
+                type: 'success',
+                duration: 1000
+              });
+              this.$router.push({ path: "/"+ this.$route.params.username +"/blogArticleInfo/"+res.data.id});
             }
           })
           
@@ -306,6 +313,8 @@ export default {
                 });
                 data.labels = tepm;
               }
+              console.log(data.labels);
+              console.log(data.labelstext);
               // //天气
               // if(TkApi.isNotEmpty(data.weather)){
               //   this.showIcon(data.weather,"weather");

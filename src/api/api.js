@@ -1,7 +1,7 @@
 import { get, post, getImg } from "./axiosUtil";
 
 export const blogApi = {
-  queryBlogSiteByUsername: function(username, headers){
+  queryBlogSiteByUsername: function(username, headers) {
     return post(
       "colornote-blog/blogPrivateOrder/queryBlogSiteByUsername",
       {
@@ -13,6 +13,7 @@ export const blogApi = {
     );
   },
   queryBlogArticleList: function(pageNum, rowsize, headers) {
+
     return post(
       "colornote-blog/blogArticle/queryBlogArticleList",
       {
@@ -109,5 +110,8 @@ export const userApi = {
     return post("colornote-user-center/user/updateUserInfo", data, {
       headers: headers
     });
+  },
+  userLogin: function(data) {
+    return post("colornote-user-center/user/userLogin", data);
   }
 };

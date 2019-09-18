@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="QQ">
-        <div class="imgtitle">秋秋QQ</div>
+        <div class="imgtitle">QQ</div>
         <img :src="require('@/assets/img/about/wx.jpg')" width="100%" alt="">
       </div>
       <div class="Wechat">
@@ -40,7 +40,7 @@
     </div>
     <div class="right">
       <div class="aboutdiv" v-if="!isEditer">
-        <div class="toolbar">
+        <div class="toolbar" v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
             <div class="writeIcon">
                 <span @click="isEditer = !isEditer"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>编辑</span>
             </div>
@@ -189,7 +189,6 @@ export default {
   .about{
     margin: -20px;
     padding-top: 15px;
-    height: ceil(100vh);
     .left{
       margin: 5px;
       .user{
@@ -306,6 +305,8 @@ export default {
 //移动端
 @media only screen and (max-width: 878px) {
   .about{
+      width: 100%;
+      margin: 0 auto;
       .left{  
       }
       .right{ 

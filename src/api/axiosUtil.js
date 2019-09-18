@@ -1,4 +1,5 @@
 import axios from "axios"; // 引入axios
+import router from "@/router.js";
 //import qs from "qs"; // 引入qs模块，用来序列化post类型的数据
 //import { Loading /*, Message */ } from "element-ui";
 
@@ -9,6 +10,7 @@ import axios from "axios"; // 引入axios
 
 //设置默认请求地址    目前是设置的网关服务器
 axios.defaults.baseURL = "http://localhost:8762/";
+//axios.defaults.baseURL = "http://192.168.0.103:8762/";
 //设置请求超时
 axios.defaults.timeout = 10000;
 //post请求头
@@ -24,6 +26,9 @@ axios.interceptors.response.use(
     //console.log(response.status);
     if (response.status === 200) {
       return Promise.resolve(response);
+    } else if (response.status === 401) {
+      router.$router.push({ path: "/u/login" });
+      return Promise.reject(response);
     } else {
       return Promise.reject(response);
     }
@@ -40,12 +45,12 @@ axios.interceptors.response.use(
         // 未登录则跳转登录页面，并携带当前页面的路径
         // 在登录成功后返回当前页面，这一步需要在登录页操作。
         case 401:
-          //   router.replace({
-          //     path: "/login",
-          //     query: {
-          //       redirect: router.currentRoute.fullPath
-          //     }
-          //   });
+          router.replace({
+            path: "/u/login",
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
+          });
           break;
 
         // 403 token过期
@@ -140,4 +145,8 @@ export function post(url, params, headers) {
         reject(err.data);
       });
   });
+}
+
+export function setHeader(headername, headervalue) {
+  axios.defaults.headers.common[headername] = headervalue;
 }

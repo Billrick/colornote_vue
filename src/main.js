@@ -21,6 +21,9 @@ import highlight from "@/config/highlightConf.js";
 import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
 
+//cookie 操作
+import VueCookies from "vue-cookies";
+
 // //滚动条插件
 // import { HappyScroll } from "vue-happy-scroll";
 // //自定义组件名
@@ -32,6 +35,7 @@ Vue.use(animate);
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 Vue.use(Viewer);
+Vue.use(VueCookies);
 
 //绑定指令  使用v-highlight 开启高亮
 Vue.use(highlight);

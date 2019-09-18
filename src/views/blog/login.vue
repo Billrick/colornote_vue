@@ -61,6 +61,7 @@ import { userApi } from "@/api/api.js";
 export default {
     created(){
         this.refreshCode();
+        
     },
     data: function(){
         return {
@@ -99,7 +100,20 @@ export default {
         login: function(formName){
             this.$refs[formName].validate((valid) => {
                 console.log(valid);
-                this.$router.push({ path: "/"+this.user.username})
+                userApi.userLogin(this.user).then(res => {
+                    console.log(res);
+                    if(res.code==200){
+                        //this.$emit("setPropData","accessToken",res.data.isLogin);
+                        let url = "/"+this.user.username +"/";
+                        if(this.$route.query.redirect != undefined && this.$route.query.redirect != null){
+                            url = this.$route.query.redirect;
+                        }
+                        this.$router.push({ path: url});
+                        this.$cookies.set("accessToken",res.data.isLogin, '0')
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
             });
         }
     }

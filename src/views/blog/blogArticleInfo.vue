@@ -2,7 +2,7 @@
     <div class="articleDiv">
         <div class="blogArticleCard ">
             <!-- animated bounceInDown -->
-            <div class="toolbar">
+            <div class="toolbar" v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
                 <div class="writeIcon">
                     <router-link tag="span" :to="'/' + username + '/editBlogArticle?p=' + articleInfo.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>编辑</router-link>
                 </div>
@@ -46,7 +46,7 @@ export default {
     created: function(){
         this.queryBlogArticleById(this.id,this.headers);
     },
-    props: ["scrollTop"],
+    props: ["scrollTopHeight","userBlogBody"],
     data:function(){
         return {
             username: this.$route.params.username,
@@ -59,6 +59,7 @@ export default {
             contentMdArr: null,
             //滚动事件
             menuEvent:true,
+            appScrollTop: document.querySelector("#app").scrollTop
         }
     },
     methods:{
@@ -86,57 +87,24 @@ export default {
                     //目录 start
                     this.contentMenu = res.data.contentMenu;
                     let windowWidth = document.documentElement.clientWidth;
-                    if(windowWidth >= 878){
-                        if(this.contentMenu != null && this.contentMenu != undefined && this.contentMenu != ""){
-                            //把目录传给根组件
-                            var menu = $(this.contentMenu);
-                            var as = menu.children("a");//所有A标签
-                            $.each(as,function(i,e){//给所有目录A标签加事件
-                                let id = $(e).attr("id");
-                                $(e).removeAttr("id").attr("c_id",id);
-                                $(e).click(function(){
-                                    var topheight = $("#"+id)[0].offsetTop ;//.offset().top;
-                                    let timer = setInterval(()=>{//跳转滚动
-                                        let scrollTop = document.documentElement.scrollTop ;
-                                        if(scrollTop>topheight){//向上滚
-                                            if((scrollTop-10)<=topheight){
-                                                document.body.scrollTop = topheight;
-                                                document.documentElement.scrollTop = topheight;
-                                                window.pageYOffset = topheight;
-                                                clearInterval(timer);
-                                            }else{
-                                                document.body.scrollTop = scrollTop - 10;
-                                                document.documentElement.scrollTop = scrollTop - 10;
-                                                window.pageYOffset = scrollTop - 10;
-                                            }
-                                        }else if(scrollTop<topheight){//向下滚
-                                            if((scrollTop+10)>topheight){
-                                                document.body.scrollTop = topheight;
-                                                document.documentElement.scrollTop = topheight;
-                                                window.pageYOffset = topheight;
-                                                clearInterval(timer);
-                                            }else{
-                                                document.body.scrollTop = scrollTop + 10;
-                                                document.documentElement.scrollTop = scrollTop + 10;
-                                                window.pageYOffset = scrollTop + 10;
-                                            }
-                                        }else{
-                                            clearInterval(timer);
-                                        }
-                                        
-                                        
-                                    },5);
-                                })
-                            })
-                            $(".menuinfo").append(menu);
-                            $(".contentMenu").show();
-                        }else{
-                            $(".contentMenu").hide();
-                            this.menuEvent = false;
-                        }
-                    }
-                    
-                    
+
+                    var menu = $(this.contentMenu);
+                    var as = menu.children("a");//所有A标签
+                    this.$nextTick(() => {
+                        var heightArr = [];
+                        $.each(as,function(i,e){//给所有目录A标签加事件
+                            let id = $(e).attr("id");
+                            $(e).removeAttr("id").attr("c_id",id);
+                            $(e).click(function(){
+                                document.querySelector("#app").scrollTop = $("#"+id)[0].offsetTop;
+                            });
+                            heightArr.push({ c_id:id ,height:$("#"+id).offset().top});
+                        });
+                        this.contentMdArr = heightArr;
+                        console.log(this.contentMdArr);
+                    })
+                    $(".menuinfo").append(menu);
+                    $(".contentMenu").show();                   
                     
                     //目录 end
                 }
@@ -147,27 +115,13 @@ export default {
         }
     },
     watch:{
-        scrollTop(v) {
-            var arr = $(".menuinfo a");
-            if(this.contentMdArr == null && arr.length > 0){
-                var heightArr = [];
-                if(arr.length>0){
-                    $.each(arr,function(i,e){
-                        heightArr.push({ c_id:$(e).attr("c_id") ,height:$("#"+$(e).attr("c_id")).offset().top});
-                    });
-                    this.contentMdArr = heightArr;
-                    if(heightArr[(arr.length-1)].height<0){
-                        this.contentMdArr = null;
-                    }
-                }
-            }
+        scrollTopHeight:function(v){
             if(this.contentMdArr){
                 let hlength = this.contentMdArr.length;
+                $(".menuinfo a").parent().removeClass("active");
                 for (let index = 0; index < hlength; index++) {
                    if(v+11 > this.contentMdArr[index].height){
                        $(".menuinfo a[c_id='"+this.contentMdArr[index].c_id+"']").parent().removeClass("active").addClass("active");
-                   }else{
-                       $(".menuinfo a[c_id='"+this.contentMdArr[index].c_id+"']").parent().removeClass("active");
                    }
                     
                 }
@@ -226,7 +180,7 @@ export default {
         box-shadow: 0 0 5px 0 rgba(38,42,48,.1);
         position: fixed;
         top: 109px;
-        right: 2px;
+        right: 7px;
         width: 230px;
         display: none;
         .menutitle{

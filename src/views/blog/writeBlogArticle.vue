@@ -269,13 +269,19 @@ export default {
               });
               this.ruleForm.labelstext += obj.label + ","; //把标签文本都放入labeltext
             }
-            
           }
           //保存
           blogApi.insertBlogArticle(this.ruleForm,this.myheaders)
           .then(res => {
             if (res.code == 200) {
               console.log(res);
+              this.$notify({
+                title: '成功',
+                message: '编辑成功',
+                type: 'success',
+                duration: 1000
+              });
+              this.$router.push({ path: "/"+ this.$route.params.username +"/blogArticleInfo/"+res.data.id});
             }
           });
         } else {

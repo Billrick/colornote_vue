@@ -70,7 +70,32 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  document.querySelector("#app").scrollTo(0, 0);
   NProgress.start();
+  let accessToken = Vue.cookies.get("accessToken");
+  let blogusername = to.params.username;
+  if (to.path == "/" + blogusername + "/writeBlogArticle") {
+    if (accessToken != undefined) {
+      let accessUser = accessToken.split("-")[0];
+      if (accessUser == blogusername) {
+        next();
+      } else {
+        next({
+          path: "/u/login",
+          query: {
+            redirect: to.fullPath
+          }
+        });
+      }
+    } else {
+      next({
+        path: "/u/login",
+        query: {
+          redirect: to.fullPath
+        }
+      });
+    }
+  }
   next();
 });
 
