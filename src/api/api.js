@@ -13,7 +13,6 @@ export const blogApi = {
     );
   },
   queryBlogArticleList: function(pageNum, rowsize, headers) {
-
     return post(
       "colornote-blog/blogArticle/queryBlogArticleList",
       {
@@ -73,6 +72,16 @@ export const blogApi = {
   },
   removeFile: function(data, headers) {
     return post("colornote-common/file/removeFile", data, {
+      headers: headers
+    });
+  },
+  queryBlogSiteByUid: function(data, headers) {
+    return post("colornote-blog/blogPrivateOrder/queryBlogSiteByUid", data, {
+      headers: headers
+    });
+  },
+  updateBlogSite: function(data, headers) {
+    return post("colornote-blog/blogPrivateOrder/updateBlogSite", data, {
       headers: headers
     });
   }

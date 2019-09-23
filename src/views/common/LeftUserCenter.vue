@@ -1,6 +1,11 @@
 <template>
     <div>
+        <div class="toolbar">
+            
+            <span class="toolIcon" title="登出"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></span>
+        </div>
         <div class="userinfo">
+            <span class="toolIcon toolIcon-bj" title="编辑个人信息"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
             <div class="useravatar">
                 <img :src="require(`@/assets/img/face/酷.png`)" height="90px"/>
             </div>
@@ -30,6 +35,19 @@ export default {
             border: 3px solid white;
             border-radius: 50%;
         }
+    }
+    .toolbar{
+        text-align: right;  
+    }
+    .toolIcon{
+        display: inline-block;
+        color: #dcdcdc;
+        padding: 5px;
+        cursor: pointer;
+    }
+    .toolIcon-bj{
+        position: absolute;
+        right: 3px;
     }
     .usercard{
         margin: 0 10px;

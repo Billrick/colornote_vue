@@ -7,6 +7,8 @@ import editBlogArticle from "@/views/blog/editBlogArticle.vue";
 import blogArticleInfo from "@/views/blog/blogArticleInfo.vue";
 import login from "@/views/blog/login.vue";
 import register from "@/views/blog/register.vue";
+import EuserInfo from "@/views/blog/EditUserInfo.vue";
+import createBlog from "@/views/blog/createBlog.vue";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -14,13 +16,13 @@ import "nprogress/nprogress.css";
 Vue.use(Router);
 
 const router = new Router({
-  scrollBehavior(to, from, savedPosition){
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { x: 0, y: 0 };
-    }
-  },
+  // scrollBehavior(to, from, savedPosition) {
+  //   if (savedPosition) {
+  //     return savedPosition;
+  //   } else {
+  //     return { x: 0, y: 0 };
+  //   }
+  // },
   routes: [
     //博客页面
     {
@@ -49,6 +51,11 @@ const router = new Router({
           component: blogArticleInfo
         },
         {
+          path: "userInfo",
+          name: "userInfo", //用户信息 编辑
+          component: EuserInfo
+        },
+        {
           path: "about",
           name: "about",
           component: () =>
@@ -57,13 +64,18 @@ const router = new Router({
       ]
     },
     {
+      path: "/:username/createBlog",
+      name: "createBlog", // 博客创建
+      component: createBlog
+    },
+    {
       path: "/u/login",
       name: "login", //登录
       component: login
     },
     {
       path: "/u/register",
-      name: "register", //登录
+      name: "register", //注册
       component: register
     }
   ]
@@ -74,27 +86,25 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   let accessToken = Vue.cookies.get("accessToken");
   let blogusername = to.params.username;
-  if (to.path == "/" + blogusername + "/writeBlogArticle") {
+  if (
+    to.path == "/" + blogusername + "/writeBlogArticle" ||
+    to.path == "/" + blogusername + "/createBlog" ||
+    to.path == "/" + blogusername + "/userInfo"
+  ) {
     if (accessToken != undefined) {
       let accessUser = accessToken.split("-")[0];
       if (accessUser == blogusername) {
         next();
-      } else {
-        next({
-          path: "/u/login",
-          query: {
-            redirect: to.fullPath
-          }
-        });
+        return;
       }
-    } else {
-      next({
-        path: "/u/login",
-        query: {
-          redirect: to.fullPath
-        }
-      });
     }
+    next({
+      path: "/u/login",
+      query: {
+        redirect: to.fullPath
+      }
+    });
+    return;
   }
   next();
 });

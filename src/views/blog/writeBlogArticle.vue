@@ -137,7 +137,7 @@
 
 <script>
 import { blogApi, TkApi } from "@/api/api.js";
-
+import qs from "qs";
 export default {
   created: function() {
     if (this.screenWidth <= 878) {//移动端
@@ -319,7 +319,9 @@ export default {
         // 第一步.将图片上传到服务器.
         var formdata = new FormData();
         formdata.append('file', $file);
-        this.headers = { 'Content-Type': 'multipart/form-data' },
+        formdata.append('func',"blogArticle");
+        this.headers = {'Content-Type': 'multipart/form-data' },
+        
         // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
         // $vm.$img2Url 详情见本页末尾
         blogApi.saveFile(formdata, this.myheaders)

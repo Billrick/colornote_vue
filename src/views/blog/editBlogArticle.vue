@@ -359,6 +359,7 @@ export default {
         // 第一步.将图片上传到服务器.
         var formdata = new FormData();
         formdata.append('file', $file);
+        formdata.append('func',"blogArticle");
         this.headers = { 'Content-Type': 'multipart/form-data' },
         // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
         // $vm.$img2Url 详情见本页末尾
