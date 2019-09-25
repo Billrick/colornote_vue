@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app" ref="app">
     <el-backtop2 target=".app" :bottom="125" :right="20" @setPropData="setPropData"></el-backtop2>
-    <router-view :scrollTopHeight="scrollTopHeight" ></router-view>
+    <router-view :key="$route.params.username" :scrollTopHeight="scrollTopHeight" ></router-view>
   </div>
 </template>
 <script>

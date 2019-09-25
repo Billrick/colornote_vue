@@ -41,6 +41,7 @@
 </template>
 <script>
 import { userApi } from "@/api/api.js";
+
 export default {
     created(){
         this.refreshCode();
@@ -98,7 +99,14 @@ export default {
         register: function(formName){
             this.$refs[formName].validate((valid) => {
                 console.log(valid)
-                this.$router.push({ path: "/"+this.user.username})
+                //this.$router.push({ path: "/"+this.user.username})
+                userApi.registerUser(this.user,{}).then(res => {
+                    if(res.code == "200"){
+                        this.$router.push({path : "/u/login"});
+                    }
+                }).catch(e => {
+
+                });
             });
         }
     }

@@ -1,6 +1,11 @@
 <template>
   <div class="blogContent">
-    <div class="ss" v-show="searchOrder"></div>
+    <div class="ss" v-show="searchOrder || key != null">
+      <div class="fromCT" v-if="key">
+        <!-- 从分类和标签过来的查询 -->
+        搜索 ：<div class="tag">{{text}} <div class="closeTag" @click="removeTag">&times;</div> </div>
+      </div>
+    </div>
     <div>
       <div class="blogCard" v-for="blog in blogList" :key="blog.id">
         <div class="blogimg">
@@ -44,11 +49,19 @@
   </div>
 </template>
 <script>
-import { blogApi } from "@/api/api.js";
+import { blogApi,TkApi } from "@/api/api.js";
 //import { Loading /*, Message */ } from "element-ui";
 
 export default {
   created: function() {
+    let query = this.$route.query;
+    if(query.key != undefined){
+      let param = TkApi.Decrypt(query.key);
+      let queryarr = param.split("-");
+      this.key = queryarr[0];
+      this.val = queryarr[1];
+      this.text = queryarr[2];
+    }
     this.getBlogListData(1);
   },
   data: function() {
@@ -61,12 +74,18 @@ export default {
       pageShow: false,
       searchOrder: true,
       username: this.$route.params.username,
+      key: "",
+      val: "",
+      text: "",
       myheaders: {
         username: this.$route.params.username
       }
     };
   },
   methods: {
+    removeTag: function(){
+      this.$router.push({path: "/"+this.$route.params.username + "/blogList"});
+    },
     handleSizeChange: function() {
       alert("页显示数变化");
     },
@@ -79,8 +98,18 @@ export default {
       if (pageNum != undefined) {
         data.pageNum = pageNum;
       }
+      if(this.key != undefined){
+        switch(this.key) {
+            case "category":
+                data.blogcategory = this.val;
+                break;
+            case "tag":
+                data.label = this.text;
+                break;
+        } 
+      }
       blogApi
-        .queryBlogArticleList(pageNum, null, this.myheaders)
+        .queryBlogArticleList(data, this.myheaders)
         .then(res => {
           if (res.code == 200) {
             this.page.total = res.data.total;
@@ -104,6 +133,24 @@ export default {
 </script>
 <style lang="less" scoped>
 .blogContent {
+  .fromCT{
+    text-align: left;
+    height: 30px;
+    padding: 0px 20px;
+    .tag{
+      display: inline-block;
+      padding: 1px 10px;
+      border-radius: 5px;
+      color: #a7a7a7;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      .closeTag{
+        display: inline-block;
+        padding: 0px 1px;
+        cursor: pointer;
+      }
+    }
+  }
   .blogCard {
     padding: 15px;
     margin: 25px 5px;

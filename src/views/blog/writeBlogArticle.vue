@@ -222,6 +222,8 @@ export default {
           if (res.code == 200) {
             this.weather = res.data;
           }
+        }).catch(e => {
+
         })
       //face
       blogApi
@@ -230,6 +232,8 @@ export default {
           if (res.code == 200) {
             this.face = res.data;
           }
+        }).catch(e => {
+          
         })
       //标签
       blogApi.queryBlogLabelByBid(this.myheaders)
@@ -237,6 +241,8 @@ export default {
           if (res.code == 200) {
             this.labels = res.data;
           }
+        }).catch(e => {
+          
         })
       //博文分类
       blogApi.queryBlogCateByBid(this.myheaders)
@@ -244,7 +250,9 @@ export default {
         if (res.code == 200) {
           this.blogcategorys = res.data;
         }
-      })
+      }).catch(e => {
+          
+        })
     },
     submitForm(formName) {
       this.ruleForm.contentHtml = document.querySelector(".v-show-content").innerHTML;

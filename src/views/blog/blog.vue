@@ -16,7 +16,7 @@
             <mheader :username="username" :userBlogBody="userBlogBody"></mheader>
             </el-header>
             <el-main>
-              <router-view @getChildComponentVal="getChildComponentVal" :userBlogBody="userBlogBody" :scrollTopHeight="scrollTopHeight" />
+              <router-view @getChildComponentVal="getChildComponentVal" :key="$route.fullPath" :userBlogBody="userBlogBody" :scrollTopHeight="scrollTopHeight" />
             </el-main>
             <el-footer>
             <!-- <router-view name="footer" /> -->
@@ -47,6 +47,9 @@ export default {
             if(accessUsername == this.username){
               this.userBlogBody.accessToken = accessToken;
               setHeader("accessToken", accessToken);
+              if(res.data.blogstatus != "0"){
+                this.$router.push({ path: "/" + accessUsername + "/createBlog"});
+              }
             }
           }
         })

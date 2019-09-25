@@ -35,11 +35,13 @@ export default {
                 id:"",
                 u_id: "",
                 blogtitle:"",
-                blogsubtitle:""
+                blogsubtitle:"",
+                usestatus:""
             },
             rules: {
                 blogtitle: [
-                    { required: true, message: '请输入博客标题', trigger: 'blur' }
+                    { required: true, message: '请输入博客标题', trigger: 'blur' },
+                    { min: 1, max: 7, message: "长度在 1 到 7 个字符", trigger: "blur" }
                 ],
             }
         };
@@ -53,6 +55,8 @@ export default {
         submitForm:function(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    //回显时会覆盖赋值 所以在提交时赋值
+                    this.blogSite.usestatus = "0";
                     blogApi.updateBlogSite(this.blogSite,this.header).then(res => {
                         if(res.code==200){
                             if(!this.showBtnGroup){
@@ -69,7 +73,6 @@ export default {
                     }).catch(e => {
                         console.log(e);
                     })
-                    alert("submit");
                 } else {
                     console.log('error submit!!');
                     return false;

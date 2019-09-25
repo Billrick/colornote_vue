@@ -9,6 +9,7 @@ import login from "@/views/blog/login.vue";
 import register from "@/views/blog/register.vue";
 import EuserInfo from "@/views/blog/EditUserInfo.vue";
 import createBlog from "@/views/blog/createBlog.vue";
+import categoryTags from "@/views/blog/categoryTags.vue";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -36,6 +37,11 @@ const router = new Router({
           component: blogList
         },
         {
+          path: "blogList",
+          name: "blogList", // 标签和分类 跳转 文章列表
+          component: blogList
+        },
+        {
           path: "writeBlogArticle",
           name: "writeBlogArticle", //写博客页面
           component: writeBlogArticle
@@ -49,6 +55,11 @@ const router = new Router({
           path: "blogArticleInfo/:id",
           name: "blogArticleInfo", //博客详情
           component: blogArticleInfo
+        },
+        {
+          path: "categoryTags",
+          name: "categoryTags", // 分类 和 标签
+          component: categoryTags
         },
         {
           path: "userInfo",

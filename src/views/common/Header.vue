@@ -52,7 +52,7 @@ export default {
       navList: [
         { id: "1", icon: "fa fa-home", name: "首页", url: "/" },
         { id: "2", icon: "fa fa-calendar", name: "时间轴", url: "/time" },
-        { id: "3", icon: "fa fa-tags", name: "分类/标签", url: "/tags" },
+        { id: "3", icon: "fa fa-tags", name: "分类/标签", url: "/categoryTags" },
         { id: "4", icon: "fa fa-user-secret", name: "关于我", url: "/about" },
         { id: "5", icon: "fa fa-search", name: "搜索", url: "/search" },
         {

@@ -24,7 +24,7 @@
   </body>
   <style>
     /*滚动条凹槽的颜色，还可以设置边框属性 */
-    ::-webkit-scrollbar-track-piece {
+    #app::-webkit-scrollbar-track-piece {
       -webkit-border-radius: 2em;
       -moz-border-radius: 2em;
       border-radius: 2em;
@@ -32,12 +32,12 @@
       width: 6px;
     }
     /*滚动条的宽度*/
-    ::-webkit-scrollbar {
+    #app::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     /*滚动条的设置*/
-    ::-webkit-scrollbar-thumb {
+    #app::-webkit-scrollbar-thumb {
       background: rgb(173, 173, 173);
       background-image: -webkit-linear-gradient(
           45deg,
@@ -55,7 +55,7 @@
       border-radius: 2em;
     }
     /*滚动条鼠标移上去*/
-    ::-webkit-scrollbar-thumb:hover {
+    #app::-webkit-scrollbar-thumb:hover {
       border: 1px solid rgb(118, 118, 119);
     }
   </style>

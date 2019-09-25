@@ -108,8 +108,8 @@ export default {
                         if(this.$route.query.redirect != undefined && this.$route.query.redirect != null){
                             url = this.$route.query.redirect;
                         }
-                        this.$router.push({ path: url});
                         this.$cookies.set("accessToken",res.data.isLogin, '0')
+                        this.$router.push({ path: url});
                     }
                 }).catch(err => {
                     console.log(err);
