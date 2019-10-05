@@ -1,9 +1,9 @@
 <template>
-  <div class="about">
+  <div class="about animated zoomIn faster">
     <div class="left">
       <div class="user">
         <div class="useravatar">
-          <img :src="require('@/assets/img/face/酷.png')" height="70px">
+          <img :src="userInfo.avatar" height="70px">
         </div>
         <div class="userinfo">
           <div class="nickname">
@@ -198,7 +198,7 @@ export default {
         border: 1px #e2e2e2 solid;
         .useravatar{
           height: 90px;
-          background: url("../../assets/img/about/banner.png");
+          background: url("../../../assets/img/about/banner.png");
           img{
             border-radius: 50%;
             margin-top: 42px;

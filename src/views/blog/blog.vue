@@ -3,7 +3,7 @@
         <el-container>
         <transition name = "fade">
             <el-aside class="leftPanel" ref="leftPanel" :width="leftPanel + 'px'">
-            <leftcenter @togglePanel="togglePanel" :userBlogBody="userBlogBody"></leftcenter>
+            <leftcenter @togglePanel="togglePanel"  :userBlogBody="userBlogBody"></leftcenter>
             <div class="showIcon" :style="{right:showIconLeft+'px'}">
                 <i class="fa fa-chevron-circle-left fa-2x" @click="togglePanel" v-show="!iconShow" aria-hidden="true"></i>
                 <i class="fa fa-chevron-circle-right fa-2x" @click="togglePanel" style="color:white;" v-show="iconShow" aria-hidden="true"></i>
@@ -16,7 +16,13 @@
             <mheader :username="username" :userBlogBody="userBlogBody"></mheader>
             </el-header>
             <el-main>
-              <router-view @getChildComponentVal="getChildComponentVal" :key="$route.fullPath" :userBlogBody="userBlogBody" :scrollTopHeight="scrollTopHeight" />
+              <!-- 刷新组件 根据全路径 -->
+              <router-view 
+                @getChildComponentVal="getChildComponentVal"
+                @callMethod="callMethod" 
+               :key="$route.fullPath"
+               :userBlogBody="userBlogBody" 
+               :scrollTopHeight="scrollTopHeight" />
             </el-main>
             <el-footer>
             <!-- <router-view name="footer" /> -->
@@ -38,24 +44,7 @@ export default {
   created: function() {
     this.username = this.$route.params.username;
     this.headers = {username: this.username};
-    blogApi.queryBlogSiteByUsername(this.username, this.headers).then(res => {
-          if (res.code == 200) {
-            this.userBlogBody = res.data;
-            let accessToken = this.$cookies.get("accessToken");
-            let accessUsername = accessToken.split("-")[0];
-            console.log(accessUsername , this.username);
-            if(accessUsername == this.username){
-              this.userBlogBody.accessToken = accessToken;
-              setHeader("accessToken", accessToken);
-              if(res.data.blogstatus != "0"){
-                this.$router.push({ path: "/" + accessUsername + "/createBlog"});
-              }
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    this.queryUserInfo(this.username,this.headers);
   },
   props:["scrollTopHeight"],
   data: function() {
@@ -104,6 +93,33 @@ export default {
     },
     getChildComponentVal(field,v){ //子组件传值给父组件
       this[field] = v;
+    },
+    callMethod(methodName,data){ //子组件调用父组件方法
+      switch(methodName){
+        case "queryUserInfo":
+          this.queryUserInfo(data.username,data.headers);
+          break;
+      }
+    },
+    queryUserInfo(username,headers){
+      blogApi.queryBlogSiteByUsername(username, headers).then(res => {
+          if (res.code == 200) {
+            this.userBlogBody = res.data;
+            let accessToken = this.$cookies.get("accessToken");
+            let accessUsername = accessToken.split("-")[0];
+            console.log(accessUsername , this.username);
+            if(accessUsername == this.username){
+              this.userBlogBody.accessToken = accessToken;
+              setHeader("accessToken", accessToken);
+              if(res.data.blogstatus != "0"){
+                this.$router.push({ path: "/" + accessUsername + "/createBlog"});
+              }
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   components: {
@@ -154,7 +170,7 @@ body {
 //侧边栏
 .el-aside{
   position: fixed;
-  z-index: 9999;
+  z-index: 1800;
   height: 100%;
   background: #122e4a;
   box-shadow: 0px 2px 11px #000;

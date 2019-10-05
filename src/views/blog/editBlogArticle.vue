@@ -113,8 +113,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="colspan">
-          <el-form-item label="是否公开" prop="isPrivate">
-            <el-switch v-model="ruleForm.isPrivate"></el-switch>
+          <el-form-item label="是否私人" prop="isPrivate">
+            <el-switch v-model="ruleForm.isPrivate"
+                        active-value="1"
+                        inactive-value="0"
+            ></el-switch>
           </el-form-item>
           </el-col>
         </el-row>
@@ -166,7 +169,7 @@ export default {
         content:"",
         weather:"",
         mood:"",
-        isPrivate: false,
+        isPrivate: "0",
         labels: [],
         labelstext:"",
         createtime: "",

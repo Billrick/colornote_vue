@@ -42,6 +42,30 @@ Vue.use(highlight);
 
 Vue.config.productionTip = false;
 
+Vue.filter("dateFormate", function(value, formate) {
+  var now = new Date(value);
+  var seperator1 = "-";
+  //格式化日，如果小于9，前面补0
+  var day = ("0" + now.getDate()).slice(-2);
+  //格式化月，如果小于9，前面补0
+  var month = ("0" + (now.getMonth() + 1)).slice(-2);
+  //拼装完整日期格式
+  //var today = now.getFullYear() + seperator1 + month + seperator1 + day;
+  var today = "";
+  switch (formate) {
+    case "yyyy-MM-dd":
+      today = now.getFullYear() + seperator1 + month + seperator1 + day;
+      break;
+    case "yyyy年MM月dd日":
+      today = now.getFullYear() + "年" + month + "月" + day + "日";
+      break;
+    case "yyyy年MM月":
+      today = now.getFullYear() + "年" + month + "月";
+      break;
+  }
+  return today;
+});
+
 new Vue({
   router,
   store,

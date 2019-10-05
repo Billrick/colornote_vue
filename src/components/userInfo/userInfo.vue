@@ -168,6 +168,7 @@ export default {
                   type: 'success',
                   duration: 1000
                 });
+                this.$emit("submitChildForm","userInfo",{username: this.userBlogBody.username,headers:{username: this.userBlogBody.username}});
               }
             }
           }).catch(e => {

@@ -9,7 +9,8 @@ import login from "@/views/blog/login.vue";
 import register from "@/views/blog/register.vue";
 import EuserInfo from "@/views/blog/EditUserInfo.vue";
 import createBlog from "@/views/blog/createBlog.vue";
-import categoryTags from "@/views/blog/categoryTags.vue";
+import categoryTags from "@/views/blog/tags/categoryTags.vue";
+import timeline from "@/views/blog/timeline/timeline.vue";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -67,10 +68,17 @@ const router = new Router({
           component: EuserInfo
         },
         {
+          path: "timeline",
+          name: "timeline", //时间轴
+          component: timeline
+        },
+        {
           path: "about",
           name: "about",
           component: () =>
-            import(/* webpackChunkName: "about" */ "./views/blog/About.vue")
+            import(
+              /* webpackChunkName: "about" */ "./views/blog/about/About.vue"
+            )
         }
       ]
     },

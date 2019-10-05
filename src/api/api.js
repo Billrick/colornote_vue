@@ -1,4 +1,5 @@
 import { get, post, getImg } from "./axiosUtil";
+import { Notification } from "element-ui";
 
 export const blogApi = {
   queryBlogSiteByUsername: function(username, headers) {
@@ -48,6 +49,11 @@ export const blogApi = {
       }
     );
   },
+  insertBlogCategory: function(data, headers) {
+    return post("colornote-blog/blogPrivateOrder/insertBlogCategory", data, {
+      headers: headers
+    });
+  },
   insertBlogArticle: function(data, headers) {
     return post("colornote-blog/blogArticle/insertBlogArticle", data, {
       headers: headers
@@ -75,6 +81,11 @@ export const blogApi = {
   },
   updateBlogSite: function(data, headers) {
     return post("colornote-blog/blogPrivateOrder/updateBlogSite", data, {
+      headers: headers
+    });
+  },
+  queryBlogArticleInTimeLine: function(data, headers) {
+    return post("colornote-blog/blogArticle/queryBlogArticleInTimeLine", data, {
       headers: headers
     });
   }
@@ -122,6 +133,14 @@ export const TkApi = {
     } else {
       return false;
     }
+  },
+  notify: function(title, msg, type, time) {
+    Notification({
+      title: title,
+      message: msg,
+      type: type,
+      duration: time
+    });
   },
   Encrypt,
   Decrypt

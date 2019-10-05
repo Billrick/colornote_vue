@@ -21,7 +21,8 @@
               v-model="ruleForm.bc_id"
               filterable
               placeholder="请选择博客栏目"
-              style="width:100%"
+              style="width:93.5%"
+              class="categorySelect"
             >
               <el-option v-for="b in blogcategorys" 
                         :key="b.id" 
@@ -30,6 +31,9 @@
                         style="display:flex;">
               </el-option>
             </el-select>
+            <div class="addCategoryBtn" @click="openDialog">
+              <i class="el-icon-plus" aria-hidden="true"></i>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="colspan">
@@ -113,8 +117,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="colspan">
-          <el-form-item label="是否公开" prop="isPrivate">
-            <el-switch v-model="ruleForm.isPrivate"></el-switch>
+          <el-form-item label="是否私人" prop="isPrivate">
+            <el-switch v-model="ruleForm.isPrivate"
+              active-value="1"
+              inactive-value="0"
+            ></el-switch>
           </el-form-item>
           </el-col>
         </el-row>
@@ -126,16 +133,20 @@
         </el-form-item>
         
       <el-form-item>
+        <addCategory ref="addCategory" @callMethods="callMethods" :userBlogBody="userBlogBody"></addCategory>
         <el-button type="primary" @click="submitForm('ruleForm')"
           >立即创建</el-button
         >
         <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button @click="openDialog">打开弹窗</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import addCategory from "@/components/category/addCategory.vue";
+
 import { blogApi, TkApi } from "@/api/api.js";
 import qs from "qs";
 export default {
@@ -148,6 +159,10 @@ export default {
     }
     this.queryBlogDic();
   },
+  props:["userBlogBody"],
+  components:{
+    addCategory
+  },
   data() {
     return {
       //表单校验
@@ -159,7 +174,7 @@ export default {
         content:"",
         weather:"",
         mood:"",
-        isPrivate: false,
+        isPrivate: "0",
         labels: [],
         labelstext:"",
         createtime: "",
@@ -245,6 +260,18 @@ export default {
           
         })
       //博文分类
+      this.refreshCategory();
+    },
+    callMethods(methodName,data){
+      switch(methodName){
+        case "refreshCategory":
+          this.refreshCategory();
+          this.ruleForm.bc_id = data.id;
+          break;
+      }
+      
+    },
+    refreshCategory(){
       blogApi.queryBlogCateByBid(this.myheaders)
       .then(res => {
         if (res.code == 200) {
@@ -252,7 +279,7 @@ export default {
         }
       }).catch(e => {
           
-        })
+      })
     },
     submitForm(formName) {
       this.ruleForm.contentHtml = document.querySelector(".v-show-content").innerHTML;
@@ -282,13 +309,7 @@ export default {
           blogApi.insertBlogArticle(this.ruleForm,this.myheaders)
           .then(res => {
             if (res.code == 200) {
-              console.log(res);
-              this.$notify({
-                title: '成功',
-                message: '编辑成功',
-                type: 'success',
-                duration: 1000
-              });
+              TkApi.notify("成功","编辑成功","success",1000);
               this.$router.push({ path: "/"+ this.$route.params.username +"/blogArticleInfo/"+res.data.id});
             }
           });
@@ -343,6 +364,8 @@ export default {
               rname: res.data.remoteFileName
               };
           }
+        }).catch(e => {
+          console.log(e);
         })
         
         
@@ -361,13 +384,33 @@ export default {
           }
         })
         delete this.imgFile[pos];
+    },
+    //打开弹窗
+    openDialog(){
+      this.$refs.addCategory.dialogVisible = true;
     }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
+<style scoped lang="less">  
+.categorySelect {
+  /deep/ .el-input__inner{
+    border-radius: 4px 0px 0px 4px;
+  }
+}
+.addCategoryBtn{
+  width: 6%;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid #DCDFE6;
+  border-left: 0;
+  border-radius: 0px 4px 4px 0px;
+  height: 38px;
+  line-height: 38px;
+  cursor: pointer;
+}
 .article-ruleForm {
   text-align: left;
 }

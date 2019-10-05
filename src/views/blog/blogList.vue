@@ -1,5 +1,5 @@
 <template>
-  <div class="blogContent">
+  <div class="blogContent animated fadeIn">
     <div class="ss" v-show="searchOrder || key != null">
       <div class="fromCT" v-if="key">
         <!-- 从分类和标签过来的查询 -->
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="publishinfo">
-          <i class="el-icon-date"></i> {{ blog.createtime }} •
+          <i class="el-icon-date"></i> {{ blog.createtime | dateFormate("yyyy年MM月dd日")}} •
           <i class="fa fa-folder-open-o" aria-hidden="true"></i>
           <!-- {{ blog.bc_id }} -->
           <span v-for="cate in blog.category" :key="cate.id">
@@ -40,7 +40,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page.pageNum"
-        :page-size="5"
+        :page-size="10"
         layout="total, prev, pager, next"
         :total="page.total"
       >
@@ -98,6 +98,7 @@ export default {
       if (pageNum != undefined) {
         data.pageNum = pageNum;
       }
+      // 分类 标签 筛选
       if(this.key != undefined){
         switch(this.key) {
             case "category":
@@ -137,6 +138,9 @@ export default {
     text-align: left;
     height: 30px;
     padding: 0px 20px;
+    font-size: 15px;
+    box-shadow: 0 0 5px 0 rgba(38, 42, 48, 0.1);
+    padding: 20px;
     .tag{
       display: inline-block;
       padding: 1px 10px;

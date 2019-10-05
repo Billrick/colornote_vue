@@ -2,6 +2,7 @@
   <div id="app" class="app" ref="app">
     <el-backtop2 target=".app" :bottom="125" :right="20" @setPropData="setPropData"></el-backtop2>
     <router-view :key="$route.params.username" :scrollTopHeight="scrollTopHeight" ></router-view>
+    <!-- 根据用户名判断是否刷新页面 -->
   </div>
 </template>
 <script>
