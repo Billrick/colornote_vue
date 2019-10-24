@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="toolbar" v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
+        <div class="toolbar" v-if="userBlogBody.isLogin">
             <span class="toolIcon" title="登出"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></span>
         </div>
         <div class="userinfo">
-            <span class="toolIcon toolIcon-bj" title="编辑个人信息"  v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
+            <span class="toolIcon toolIcon-bj" title="编辑个人信息"  v-if="userBlogBody.isLogin">
                 <router-link :to="'/' + userBlogBody.username + '/userInfo'" tag="span"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></router-link>
             </span>
             <div class="useravatar">

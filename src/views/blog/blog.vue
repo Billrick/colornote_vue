@@ -38,7 +38,7 @@ import mfooter from "@/views/common/Footer.vue";
 import leftcenter from "@/views/common/LeftUserCenter.vue";
 
 import { setHeader } from "@/api/axiosUtil.js";
-import { blogApi } from "@/api/api.js";
+import { blogApi, TkApi } from "@/api/api.js";
 
 export default {
   created: function() {
@@ -106,10 +106,11 @@ export default {
           if (res.code == 200) {
             this.userBlogBody = res.data;
             let accessToken = this.$cookies.get("accessToken");
-            let accessUsername = accessToken.split("-")[0];
-            console.log(accessUsername , this.username);
+            if(accessToken == undefined) return;
+            let accessUsername = TkApi.Decrypt(accessToken).split("-")[0];
             if(accessUsername == this.username){
               this.userBlogBody.accessToken = accessToken;
+              this.userBlogBody.isLogin = true;
               setHeader("accessToken", accessToken);
               if(res.data.blogstatus != "0"){
                 this.$router.push({ path: "/" + accessUsername + "/createBlog"});

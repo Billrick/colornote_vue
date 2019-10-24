@@ -1,12 +1,12 @@
 <template>
     <div class="categoryTags">
-        <div class="categorys animated rotateInDownLeft faster">
+        <div class="categorys animated flipInX faster">
             <div class="title">分类</div>
             <div class="category" v-for="c in category" :key="c.id" @click="searchBlogList('category',c.id,c.categoryName)">
                 {{c.categoryName}} <span class="total">{{c.total}}篇</span>
             </div>
         </div>
-        <div class="tags animated rotateInDownRight faster">
+        <div class="tags animated flipInX faster">
             <div class="title">标签</div>
             <div class="tag" v-for="t in tags" :key="t.id" @click="searchBlogList('tag',t.id,t.label)">
                 <span>{{t.label}}</span>

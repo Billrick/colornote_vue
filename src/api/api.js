@@ -88,22 +88,27 @@ export const blogApi = {
     return post("colornote-blog/blogArticle/queryBlogArticleInTimeLine", data, {
       headers: headers
     });
+  },
+  //更新热度
+  updateBlogArticleAttention: function(data){
+    return post("colornote-blog/blogArticle/updateBlogArticleAttention", data, {});
   }
 };
 
 import CryptoJS from "crypto-js"; //引用AES源码js
 
-const key = CryptoJS.enc.Utf8.parse("1234123412ABCDEF"); //十六位十六进制数作为密钥
-const iv = CryptoJS.enc.Utf8.parse("ABCDEF1234123412"); //十六位十六进制数作为密钥偏移量
+const key = CryptoJS.enc.Utf8.parse("zhangZhang147258"); //十六位十六进制数作为密钥
+const iv = CryptoJS.enc.Utf8.parse("147258zhangZhang"); //十六位十六进制数作为密钥偏移量
 
 //解密方法
 function Decrypt(word) {
-  let encryptedHexStr = CryptoJS.enc.Hex.parse(word);
-  let srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+  word = decodeURIComponent(word);
+  let base64 = CryptoJS.enc.Base64.parse(word);
+  let srcs = CryptoJS.enc.Base64.stringify(base64);
   let decrypt = CryptoJS.AES.decrypt(srcs, key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
+    padding: CryptoJS.pad.ZeroPadding
   });
   let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
   return decryptedStr.toString();
@@ -115,9 +120,9 @@ function Encrypt(word) {
   let encrypted = CryptoJS.AES.encrypt(srcs, key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
+    padding: CryptoJS.pad.ZeroPadding
   });
-  return encrypted.ciphertext.toString().toUpperCase();
+  return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
 }
 
 export const TkApi = {
@@ -141,6 +146,12 @@ export const TkApi = {
       type: type,
       duration: time
     });
+  },
+  queryCommentList: function(data){
+    return post("colornote-common/comment/queryCommentList", data, {});
+  },
+  insertComment: function(data){
+    return post("colornote-common/comment/insertComment", data, {});
   },
   Encrypt,
   Decrypt

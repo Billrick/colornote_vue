@@ -10,7 +10,7 @@ import router from "@/router.js";
 
 //设置默认请求地址    目前是设置的网关服务器
 axios.defaults.baseURL = "http://localhost:8762/";
-//axios.defaults.baseURL = "http://172.16.68.15:8762/";
+//axios.defaults.baseURL = "http://172.31.14.147:8762/";
 //设置请求超时
 axios.defaults.timeout = 10000;
 //post请求头

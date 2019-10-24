@@ -57,11 +57,10 @@
     </div>
 </template>
 <script>
-import { userApi } from "@/api/api.js";
+import { userApi,TkApi } from "@/api/api.js";
 export default {
     created(){
         this.refreshCode();
-        
     },
     data: function(){
         return {
@@ -108,7 +107,8 @@ export default {
                         if(this.$route.query.redirect != undefined && this.$route.query.redirect != null){
                             url = this.$route.query.redirect;
                         }
-                        this.$cookies.set("accessToken",res.data.isLogin, '0')
+                        this.$cookies.set("accessToken", res.data.isLogin, '0');
+                        
                         this.$router.push({ path: url});
                     }
                 }).catch(err => {

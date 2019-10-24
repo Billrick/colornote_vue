@@ -40,7 +40,7 @@
     </div>
     <div class="right">
       <div class="aboutdiv" v-if="!isEditer">
-        <div class="toolbar" v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
+        <div class="toolbar" v-if="userBlogBody.isLogin">
             <div class="writeIcon">
                 <span @click="isEditer = !isEditer"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>编辑</span>
             </div>
@@ -56,6 +56,7 @@
           </div>
           <div style="text-align:right;padding:13px 0px">
             <el-button type="primary" @click="submitForm()">立即创建</el-button>
+            <el-button  @click="isEditer=!isEditer">取消</el-button>
           </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import EuserInfo from "@/views/blog/EditUserInfo.vue";
 import createBlog from "@/views/blog/createBlog.vue";
 import categoryTags from "@/views/blog/tags/categoryTags.vue";
 import timeline from "@/views/blog/timeline/timeline.vue";
+import { TkApi } from "@/api/api.js";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -29,7 +30,6 @@ const router = new Router({
     //博客页面
     {
       path: "/:username",
-      name: "home", //主页
       component: blog,
       children: [
         {
@@ -111,7 +111,9 @@ router.beforeEach((to, from, next) => {
     to.path == "/" + blogusername + "/userInfo"
   ) {
     if (accessToken != undefined) {
-      let accessUser = accessToken.split("-")[0];
+      accessToken = decodeURIComponent(accessToken);
+      let publicToken = TkApi.Decrypt(accessToken);
+      let accessUser = publicToken.split("-")[0];
       if (accessUser == blogusername) {
         next();
         return;

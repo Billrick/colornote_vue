@@ -30,7 +30,7 @@ export default {
     overflow-y: scroll;
   }
   .el-backtop{
-    z-index: 99999;
+    z-index: 1900;
     width: 28px;
     height: 28px;
   }

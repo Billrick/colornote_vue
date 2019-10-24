@@ -1,8 +1,8 @@
 <template>
     <div class="articleDiv">
-        <div class="blogArticleCard ">
+        <div class="blogArticleCard">
             <!-- animated bounceInDown -->
-            <div class="toolbar" v-if="$cookies.get('accessToken') != undefined && $cookies.get('accessToken').split('-')[0] == $route.params.username">
+            <div class="toolbar" v-if="userBlogBody.isLogin">
                 <div class="writeIcon">
                     <router-link tag="span" :to="'/' + username + '/editBlogArticle?p=' + articleInfo.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>编辑</router-link>
                 </div>
@@ -25,7 +25,12 @@
                 
             </div>
             </viewer>
+            
+            <div class="commentDiv">
+                <comment :id="id" :userBlogBody="userBlogBody"></comment>
+            </div>
         </div>
+        
         <div class="contentMenu">
             <div class="menutitle">
                 目录
@@ -40,11 +45,14 @@
 <script>
 import { blogApi } from "@/api/api.js";
 import $ from "jquery";
-
+import comment from "@/components/comment/comment.vue";
 
 export default {
     created: function(){
         this.queryBlogArticleById(this.id,this.headers);
+    },
+    components:{
+        comment
     },
     props: ["scrollTopHeight","userBlogBody"],
     data:function(){
@@ -87,24 +95,29 @@ export default {
                     //目录 start
                     this.contentMenu = res.data.contentMenu;
                     let windowWidth = document.documentElement.clientWidth;
-
-                    var menu = $(this.contentMenu);
-                    var as = menu.children("a");//所有A标签
-                    this.$nextTick(() => {
-                        var heightArr = [];
-                        $.each(as,function(i,e){//给所有目录A标签加事件
-                            let id = $(e).attr("id");
-                            $(e).removeAttr("id").attr("c_id",id);
-                            $(e).click(function(){
-                                document.querySelector("#app").scrollTop = $("#"+id)[0].offsetTop;
+                    if(windowWidth>878){ // 移动端不显示目录
+                        var menu = $(this.contentMenu);
+                        var as = menu.children("a");//所有A标签
+                        this.$nextTick(() => {
+                            var heightArr = [];
+                            $.each(as,function(i,e){//给所有目录A标签加事件
+                                let id = $(e).attr("id");
+                                $(e).removeAttr("id").attr("c_id",id);
+                                $(e).click(function(){
+                                    document.querySelector("#app").scrollTop = $("#"+id)[0].offsetTop;
+                                });
+                                heightArr.push({ c_id:id ,height:$("#"+id).offset().top});
                             });
-                            heightArr.push({ c_id:id ,height:$("#"+id).offset().top});
-                        });
-                        this.contentMdArr = heightArr;
-                        console.log(this.contentMdArr);
-                    })
-                    $(".menuinfo").append(menu);
-                    $(".contentMenu").show();                   
+                            this.contentMdArr = heightArr;
+                            if(heightArr.length>0){
+                                $(".menuinfo").append(menu);
+                                $(".contentMenu").show(); 
+                            }
+                        })
+
+                              
+                           
+                    }                  
                     
                     //目录 end
                 }
@@ -173,6 +186,7 @@ export default {
         .blogArticleBody{
             margin-top: 20px;
             text-align: left;
+            color: #5a5a5a;
         }
     }
     .contentMenu{
@@ -243,6 +257,9 @@ export default {
 
 /*屏幕宽度小于878px的时候执行里面的css*/
 @media only screen and (max-width: 878px) {
+    .blogArticleCard{
+        padding: 10px!important;
+    }
     .articleTitle{
         font-size: 22px!important;
     }
