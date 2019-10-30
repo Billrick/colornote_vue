@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
+
+//------------------- 个人博客
 import blog from "@/views/blog/blog.vue";
 import blogList from "./views/blog/blogList.vue";
 import writeBlogArticle from "@/views/blog/writeBlogArticle.vue";
@@ -11,6 +13,12 @@ import EuserInfo from "@/views/blog/EditUserInfo.vue";
 import createBlog from "@/views/blog/createBlog.vue";
 import categoryTags from "@/views/blog/tags/categoryTags.vue";
 import timeline from "@/views/blog/timeline/timeline.vue";
+
+//------------------- 聊天广场
+import chatSquare from "@/views/communityPlatform/chatSquare.vue";
+import index from "@/views/communityPlatform/index.vue";
+
+
 import { TkApi } from "@/api/api.js";
 
 import NProgress from "nprogress";
@@ -79,6 +87,17 @@ const router = new Router({
             import(
               /* webpackChunkName: "about" */ "./views/blog/about/About.vue"
             )
+        }
+      ]
+    },
+    {
+      path: "/chatSquare", //聊天广场
+      component: chatSquare,
+      children: [
+        {
+          path: "index",
+          name: "index", //时间轴
+          component: index
         }
       ]
     },

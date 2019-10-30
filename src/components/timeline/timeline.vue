@@ -1,5 +1,5 @@
 <template>
-    <div class="timeline">
+    <div class="timeline animated fadeIn">
        <div class="timeline-card">
            <div class="title-point"></div>
            <p class="timeline-number">目前共计 {{timelineData.total}} 篇文章~</p>

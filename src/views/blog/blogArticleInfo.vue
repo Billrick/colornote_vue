@@ -1,6 +1,6 @@
 <template>
     <div class="articleDiv">
-        <div class="blogArticleCard">
+        <div class="blogArticleCard" v-if="showCard">
             <!-- animated bounceInDown -->
             <div class="toolbar" v-if="userBlogBody.isLogin">
                 <div class="writeIcon">
@@ -67,7 +67,8 @@ export default {
             contentMdArr: null,
             //滚动事件
             menuEvent:true,
-            appScrollTop: document.querySelector("#app").scrollTop
+            appScrollTop: document.querySelector("#app").scrollTop,
+            showCard: false
         }
     },
     methods:{
@@ -99,6 +100,7 @@ export default {
                         var menu = $(this.contentMenu);
                         var as = menu.children("a");//所有A标签
                         this.$nextTick(() => {
+                            this.showCard = true;
                             var heightArr = [];
                             $.each(as,function(i,e){//给所有目录A标签加事件
                                 let id = $(e).attr("id");
