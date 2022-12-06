@@ -39,7 +39,7 @@
     "less-loader": "^4.1.0",
     "nprogress": "^0.2.0",
     "prettier": "^1.18.2",
-    "qs": "^6.8.0",
+    "qs": "^6.8.3",
     "url-loader": "^2.1.0",
     "v-viewer": "^1.4.2",
     "vue-axios": "^2.1.4",
